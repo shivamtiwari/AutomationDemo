@@ -17,7 +17,7 @@ public class SmokeTest {
 	@Test
 	public void setup() {
 		Reporter.log(" ########## Start browser session STARTS ###########");
-		test.startBrowserSession(test.getYamlVal("browser"));
+		test.startBrowserSession(System.getProperty("browser", test.getYamlVal("browser")));
 		Reporter.log(" ########## Start browser session ENDS ###########");
 	}
 	

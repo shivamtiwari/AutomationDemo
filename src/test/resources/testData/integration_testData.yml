@@ -5,7 +5,7 @@
 ##########################################################################################
 
 
-browser: iexplore
+browser: firefox
 ExecutionType: local
 RemoteIP: http://172.11.1.86:4444/wd/hub
 appurl: http://www.loveorlandotickets.co.uk/
