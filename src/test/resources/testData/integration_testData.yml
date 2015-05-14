@@ -1,0 +1,26 @@
+##########################################################################################
+#
+#******* Global Configurations for Automation Scripts  *******
+#
+##########################################################################################
+
+
+browser: iexplore
+ExecutionType: local
+RemoteIP: http://172.11.1.86:4444/wd/hub
+appurl: http://www.loveorlandotickets.co.uk/
+ajax_timeout: 30
+
+
+  
+##########################################################################################
+#
+#******* Configurations for Email Module  *******
+#
+##########################################################################################
+
+results:
+   sendEmail: "yes"
+   recipients: 
+       recipient1: samasgates@gmail.com
+
