@@ -6,8 +6,8 @@
 
 
 browser: firefox
-ExecutionType: local
-RemoteIP: http://172.11.1.86:4444/wd/hub
+ExecutionType: remote
+RemoteIP: http://shivamtiwari:4444/wd/hub
 appurl: http://www.loveorlandotickets.co.uk/
 ajax_timeout: 30
 
