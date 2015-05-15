@@ -1,7 +1,9 @@
 package com.isango.AutomationDemo.pageUI;
 
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -9,57 +11,174 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.isango.AutomationDemo.Utilities.SeleniumWait;
+
 public class BaseUI {
 	WebDriver driver;
 	int AJAX_WAIT = 60;
-	private int waitTime = 60;
+	SeleniumWait expWait;
 
 	public BaseUI(WebDriver driver) {
 		PageFactory.initElements(driver, this);
+		expWait = new SeleniumWait(driver);
 	}
 
-	public boolean waitForElementToAppear(WebElement element) {
-		driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
-		long endTime = System.currentTimeMillis() + waitTime;
-		int elementDisplayed = 0;
-		while (System.currentTimeMillis() < endTime) {
-			elementDisplayed++;
-			System.out.println(elementDisplayed);
-			try {
-				if (element.isDisplayed()) {
-					driver.manage().timeouts()
-							.implicitlyWait(60, TimeUnit.SECONDS);
-					return true;
-				}
-			} catch (Exception e) {
-				System.out.println("Waiting...");
+	/**
+	 * Gets the page title.
+	 *
+	 * @return the page title
+	 */
+	public String getPageTitle() {
+		return driver.getTitle();
+	}
+
+	/**
+	 * Gets the element by index.
+	 *
+	 * @param elementlist
+	 *            the elementlist
+	 * @param index
+	 *            the index
+	 * @return the element by index
+	 */
+	protected WebElement getElementByIndex(List<WebElement> elementlist,
+			int index) {
+		return elementlist.get(index);
+	}
+
+	/**
+	 * Gets the element by text.
+	 *
+	 * @param elementlist
+	 *            the elementlist
+	 * @param elementtext
+	 *            the elementtext
+	 * @return the element by text
+	 */
+	protected WebElement getElementByText(List<WebElement> elementlist,
+			String elementtext) {
+		WebElement element = null;
+		for (WebElement elem : elementlist) {
+			if (elem.getText().equalsIgnoreCase(elementtext)) {
+				element = elem;
 			}
 		}
-		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
-		return false;
+		if (element == null) {
+		}
+		return element;
 	}
 
-	public void explicitWait(WebDriver driver, int seconds, String locator,
-			String selectorElement, boolean check) {
-		WebDriverWait wait = new WebDriverWait(driver, seconds);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By
-				.xpath("//*")));
-		if (check) {
-			if (locator.equalsIgnoreCase("xpath")) {
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By
-						.xpath(selectorElement)));
-			} else if (locator.equalsIgnoreCase("css")) {
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By
-						.cssSelector(selectorElement)));
-			} else if (locator.equalsIgnoreCase("id")) {
-				wait.until(ExpectedConditions.visibilityOfElementLocated(By
-						.id(selectorElement)));
-			} else {
-				System.out.println("Enter correct locator");
-			}
+	/**
+	 * Gets the window handle.
+	 *
+	 * @return the window handle
+	 */
+	public void getWindowHandle() {
+		for (String winHandle : driver.getWindowHandles()) {
+			driver.switchTo().window(winHandle);
 		}
 	}
 
+	/**
+	 * Gets the token name.
+	 *
+	 * @param token
+	 *            the token
+	 * @return the token name
+	 */
+	public void get_TokenName(String token) {
+		waitLong(token.length());
+	}
+
+	/**
+	 * Switch to frame.
+	 *
+	 * @param stf
+	 *            the stf
+	 */
+	public void switchToFrame(String stf) {
+		WebDriverWait wait = new WebDriverWait(driver, 120);
+		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(stf));
+	}
+
+	public void switchToFrameWithRender(String stf) {
+		WebDriverWait wait = new WebDriverWait(driver, 30);
+		wait.until(ExpectedConditions.frameToBeAvailableAndSwitchToIt(stf));
+	}
+
+	/**
+	 * Switch to default content.
+	 */
+	public void switchToDefaultContent() {
+		driver.switchTo().defaultContent();
+	}
+
+	/**
+	 * Click on log out.
+	 */
+	public void clickOnLogOut() {
+		driver.findElement(
+				By.xpath(".//*[@class[contains(.,'user-menu-link')]]")).click();
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("document.getElementById('logout_link').click();");
+	}
+
+	/**
+	 * Wait for sync page.
+	 */
+	public void waitForSyncPage() {
+		expWait.waitForDomToLoad();
+	}
+
+	/**
+	 * Wait long.
+	 *
+	 * @param i
+	 *            the i
+	 */
+	public void waitLong(int i) {
+		try {
+			Thread.sleep(i * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Check week slider spinner to disappear.
+	 */
+	public void checkWeekSliderSpinnerToDisappear() {
+		expWait.waitForElementToDisappear(By.id("weekslider"), 5);
+	}
+
+	/**
+	 * Check week slider spinner to appear.
+	 */
+	public void checkWeekSliderSpinnerToAppear() {
+		expWait.waitForElementToDisappear(By.id("weekslider"), 2);
+	}
+
+	/**
+	 * Execute javascript.
+	 *
+	 * @param script
+	 *            the script
+	 */
+	public void executeJs(String script) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(script, (Object) null);
+	}
+
+	/**
+	 * Select element from dropdown.
+	 *
+	 * @param selectElement
+	 *            the select element
+	 * @param selectorType
+	 *            the selector type
+	 * @param sel
+	 *            the sel
+	 */
 	public void SelectElementFromDropdown(WebElement selectElement,
 			String selectorType, String sel) {
 		Select select = new Select(selectElement);
@@ -74,32 +193,4 @@ public class BaseUI {
 		}
 	}
 
-	public void waitForLoaderToDisappear(WebElement element) {
-		int i = 0;
-		resetImplicitTimeout(2);
-		try {
-			while (element.isDisplayed() && i <= AJAX_WAIT) {
-				Thread.sleep(1000);
-				i++;
-			}
-		} catch (Exception e) {
-		}
-		resetImplicitTimeout(AJAX_WAIT);
-	}
-
-	public void resetImplicitTimeout(int newTimeOut) {
-		try {
-			driver.manage().timeouts()
-					.implicitlyWait(newTimeOut, TimeUnit.SECONDS);
-		} catch (Exception e) {
-		}
-	}
-
-	public void hardWait(int seconds) {
-		try {
-			Thread.sleep(seconds * 1000);
-		} catch (Exception e) {
-			System.out.println("Can't wait...");
-		}
-	}
 }

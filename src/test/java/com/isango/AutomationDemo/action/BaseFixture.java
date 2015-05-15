@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,19 +19,30 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Reporter;
 
 import com.isango.AutomationDemo.Utilities.Utilities;
-import com.isango.AutomationDemo.pageUI.HomePageUI;
+import com.isango.AutomationDemo.pageUI.*;
 
 public class BaseFixture {
 	public WebDriver driver;
 	public DesiredCapabilities capabilities;
 	HomePageUI homePage;
+	ProductPageUI productPage;
+	CheckOutPageUI checkoutPage;
+	LoginAndPaymentPageUI paymentPage;
+	ConfirmationPageUI confirmationPage;
 	public static URL url;
 
 	public void startBrowserSession(String Bro) {
+		Reporter.log("Browser Name : " + Bro);
 		if (getYamlVal("ExecutionType").equalsIgnoreCase("remote")) {
-			initBrowserSessionRemote(Bro);
+			initBrowserSessionRemote(Bro);			
+			String gridSessionId = ((RemoteWebDriver) driver).getSessionId().toString();
+			System.out.println(" ***Selenium Grid SESSION_ID: "
+							+ gridSessionId
+							+ "***\n http://jenkins.mindtap.corp.web:4444/grid/api/testsession?session="
+							+ gridSessionId);
 		} else {
 			initBrowserSessionLocal(Bro);
 		}
@@ -50,6 +62,7 @@ public class BaseFixture {
 		driver.manage().timeouts().implicitlyWait(80, TimeUnit.SECONDS);
 		initPageObjects();
 		driver.manage().window().maximize();
+		driver.manage().deleteAllCookies();
 	}
 
 	public void initBrowserSessionLocal(String Bro) {
@@ -86,6 +99,10 @@ public class BaseFixture {
 
 	public void initPageObjects() {
 		homePage = new HomePageUI(driver);
+		productPage = new ProductPageUI(driver);
+		checkoutPage = new CheckOutPageUI(driver);
+		paymentPage = new LoginAndPaymentPageUI(driver);
+		confirmationPage = new ConfirmationPageUI(driver);
 	}
 
 	public void launchUrl(String url) {
@@ -125,6 +142,11 @@ public class BaseFixture {
 		} catch (Exception e) {
 			System.out.println("Can't wait...");
 		}
+	}
+	
+	public void executeJs(String script) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(script, (Object) null);
 	}
 
 	public void SelectElementFromDropdown(WebElement selectElement,

@@ -4,11 +4,11 @@ import org.testng.Reporter;
 import org.testng.annotations.*;
 
 import com.isango.AutomationDemo.Utilities.Utilities;
-import com.isango.AutomationDemo.action.HomePageActions;
+import com.isango.AutomationDemo.action.ConfirmationPageActions;
 
 public class SmokeTest {
 
-	HomePageActions test = new HomePageActions();
+	ConfirmationPageActions test = new ConfirmationPageActions();
 	@BeforeClass
 	public void initialsettings() {
 		Utilities.setYamlFilePath("integration_testData.yml");
@@ -22,10 +22,36 @@ public class SmokeTest {
 	}
 	
 	@Test(dependsOnMethods = "setup")
-	public void launchDashboardPage() {
+	public void launchHomePage() {
 		Reporter.log(" ########## Launch Home page STARTS ###########");
 		test.launchUrl(test.getYamlVal("appurl"));
 		Reporter.log(" ########## Launch Home page ENDS ###########");
+	}
+	
+	@Test(dependsOnMethods = "launchHomePage")
+	public void verifyTopBannerLinksDisplay() {
+		test.verifyTopBannerLinksDisplay();
+	}
+	
+	@Test(dependsOnMethods = "verifyTopBannerLinksDisplay")
+	public void verifyBestProductAssociatedInformation() {
+		test.verifyBestProductAssociatedInformation();
+	}
+	
+	@Test(dependsOnMethods = "verifyBestProductAssociatedInformation")
+	public void verifySelectProductAndUserNavigateToProductDecriptionPage() {
+		test.selectProduct();
+	}
+	
+	@Test(dependsOnMethods = "verifySelectProductAndUserNavigateToProductDecriptionPage")
+	public void enterInformationAndClickOnBookNow() {
+		test.enterInformationAndClickOnBookNow();
+		test.verifyCartPageDisplay();
+		test.enterChildAge();
+		test.verifyclickonProceedtoPay();
+		test.enterInformationOnPaymentPage();
+		test.verifyConfirmationPageDisplay();
+		test.verifyBookingInformation();
 	}
 	
 	@AfterClass
