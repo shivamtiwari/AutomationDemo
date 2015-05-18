@@ -62,4 +62,8 @@ public class HomePageUI extends BaseUI{
 		return expWait.getWhenVisible(By.xpath("//div[@id='dnn_Merchandising']//*[@class='bestOuter'][2]//*[@class='bookNow']//a"));
 	}
 	
+	public WebElement lnk_cookieMsgOK(){
+		return expWait.getWhenVisible(By.xpath("//div[@class='cookieMsg']//a[text()='OK']"), 20);
+	}
+	
 }

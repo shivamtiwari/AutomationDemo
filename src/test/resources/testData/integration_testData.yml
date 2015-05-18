@@ -6,10 +6,29 @@
 
 
 browser: firefox
-ExecutionType: Remote
+ExecutionType: remote
 RemoteIP: http://shivamtiwari:4444/wd/hub
 appurl: http://lot.isango.com/
 ajax_timeout: 30
+
+User:
+  Yourdetails:
+    Date: 20 May 2015
+    FirstName: Automation 
+    LastName: Test
+    Phone: "0123456789"
+    email: "test@automation.com"
+    
+  BillingAddress:
+    Address: B13 sector 23
+    City: Gurgaon
+    PostCode: 201301
+    
+  PaymentDetails:
+    CardNo: "4200000000000000"
+    CardHolderName: Automation
+    SecCode: 123
+  
 
 
   

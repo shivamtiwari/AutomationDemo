@@ -13,8 +13,7 @@ public class ProductPageUI extends BaseUI {
 	}
 
 	public WebElement heading_ProductIntro() {
-		return expWait.getWhenVisible(By.xpath("//*[@class='headOuter']//h1"),
-				80);
+		return expWait.getWhenVisible(By.xpath("//*[@class='headOuter']"),80);
 	}
 
 	public WebElement txt_spAdultPrice() {
@@ -26,7 +25,9 @@ public class ProductPageUI extends BaseUI {
 	}
 	
 	public List<WebElement> list_DropDown(){
-		return expWait.getWhenVisibleList(By.xpath("//*[@class='bestInner']//span[contains(@id,'arrow')]"), 60);
+//		return expWait.getWhenVisibleList(By.xpath("//*[@class='bestInner']//span[contains(@id,'arrow')]"), 60);
+		return expWait.getWhenVisibleList(By.xpath("//*[@class='bestInner']//*[@class='ddTitle']"), 60);
+
 	}
 	
 	public WebElement select_Adults() {

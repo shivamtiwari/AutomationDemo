@@ -30,8 +30,18 @@ public class HomePageActions extends BaseFixture {
 		adultPrice = adultPrice.replaceAll("Adult", "");
 		String childPrice = homePage.lnk_priceChild().getText();
 		childPrice = childPrice.replaceAll("Child", "");
+
+//		cookies OK button
+		try{
+			homePage.lnk_cookieMsgOK().click();
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("Cookies msg not display");	
+		}
 		homePage.lnk_bookNow().click();
+
 		productPage.heading_ProductIntro().isDisplayed();
+		
 		Assert.assertTrue(productPage.heading_ProductIntro().getText()
 				.equals(productIntro));
 		Assert.assertTrue(productPage.txt_spAdultPrice().getText()

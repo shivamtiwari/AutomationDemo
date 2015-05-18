@@ -41,7 +41,7 @@ public class BaseFixture {
 			String gridSessionId = ((RemoteWebDriver) driver).getSessionId().toString();
 			System.out.println(" ***Selenium Grid SESSION_ID: "
 							+ gridSessionId
-							+ "***\n http://jenkins.mindtap.corp.web:4444/grid/api/testsession?session="
+							+ "***\n http://shivamtiwari:4444/grid/api/testsession?session="
 							+ gridSessionId);
 		} else {
 			initBrowserSessionLocal(Bro);

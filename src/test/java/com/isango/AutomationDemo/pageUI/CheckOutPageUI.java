@@ -26,7 +26,7 @@ public class CheckOutPageUI extends BaseUI {
 	}
 	
 	public WebElement select_ExpandDropDown(int index) {
-		return expWait.getWhenVisible(By.xpath("(//*[contains(@class,'crossSellContent')]//*[contains(@id,'Child_')]//*[contains(@class,'cardOption') and @style=\"\"])["+index+"]//*[@class='arrow']"));
+		return expWait.getWhenVisible(By.xpath("(//*[contains(@class,'crossSellContent')]//*[contains(@id,'Child_')]//*[contains(@class,'cardOption') and @style=\"\"])["+index+"]//*[@class='ddTitle']"));
 	}
 
 
