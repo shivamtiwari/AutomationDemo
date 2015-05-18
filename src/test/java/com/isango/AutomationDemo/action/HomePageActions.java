@@ -35,8 +35,8 @@ public class HomePageActions extends BaseFixture {
 		try{
 			homePage.lnk_cookieMsgOK().click();
 		}catch(Exception e){
-			e.printStackTrace();
-			System.out.println("Cookies msg not display");	
+		//	e.printStackTrace();
+			System.out.println("Cookies message not display");	
 		}
 		homePage.lnk_bookNow().click();
 
