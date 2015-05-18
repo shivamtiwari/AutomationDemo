@@ -5,7 +5,7 @@
 ##########################################################################################
 
 
-browser: firefox
+browser: chrome
 ExecutionType: remote
 RemoteIP: http://shivamtiwari:4444/wd/hub
 appurl: http://lot.isango.com/

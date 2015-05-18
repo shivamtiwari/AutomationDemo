@@ -1,5 +1,6 @@
 package com.isango.AutomationDemo.test;
 
+import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.annotations.*;
 
@@ -9,9 +10,15 @@ import com.isango.AutomationDemo.action.ConfirmationPageActions;
 public class SmokeTest {
 	ConfirmationPageActions test = new ConfirmationPageActions();
 
+
+	
 	@BeforeClass
-	public void initialsettings() {
+	public void setUpClass() {
+		System.out.println("\n#####################################################################################################");
+		System.out.println("################ e2e smoke #############");
+		System.out.println("######################################################################################################\n\n");
 		Utilities.setYamlFilePath("integration_testData.yml");
+
 	}
 
 	@Test
@@ -104,10 +111,47 @@ public class SmokeTest {
 	public void verifyBookingInformation() {
 		test.verifyBookingInformation();
 	}
+	@BeforeMethod
+	public void init() {
+		System.out.println("\n\n__________________________________________________________________________");
+	}
 
+	/**
+	 * Capture screen shot on failure.
+	 * 
+	 * @param result
+	 *            the result
+	 */
+	@AfterMethod
+	public void captureScreenShotOnFailure(ITestResult result) {
+		System.out.println("******************************************************");
+		System.out.println("Test Name: " + result.getName());
+		if (!result.isSuccess()) {
+			System.out.println("Test Result: FAIL");
+			if (test.getYamlVal("ExecutionType").equalsIgnoreCase("remote")) {
+				test.takeScreenshotOfFailure(result);
+			} else {
+				test.takeScreenshotOfFailureFromLocalMachine(result);
+			}
+		} else {
+			System.out.println("Test Result: PASS");
+		}
+		System.out.println("******************************************************");
+		System.out.println("__________________________________________________________________________");
+	}
+
+	/**
+	 * Tear down class.
+	 * 
+	 * @throws Exception
+	 *             the exception
+	 */
 	@AfterClass
-	public void tearDown() {
-		Reporter.log(" ########## Stop Browser Session ###########");
+	public void tearDownClass() throws Exception {
 		test.stopBrowserSession();
+		System.out.println("###########################################################################################");
+		System.out.println("########################################################################################### \n\n");
 	}
 }
+
+

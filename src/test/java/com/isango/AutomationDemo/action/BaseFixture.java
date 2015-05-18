@@ -1,24 +1,34 @@
 package com.isango.AutomationDemo.action;
 
 import java.awt.Toolkit;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.io.FileUtils;
+
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.ITestResult;
 import org.testng.Reporter;
 
 import com.isango.AutomationDemo.Utilities.Utilities;
@@ -160,6 +170,37 @@ public class BaseFixture {
 		}
 		if (selectorType.equalsIgnoreCase("value")) {
 			select.selectByValue(sel);
+		}
+	}
+	
+	public void takeScreenshotOfFailure(ITestResult result) {
+		Calendar calendar = Calendar.getInstance();
+		SimpleDateFormat formater = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
+		String methodName = result.getName();
+		WebDriver augmentedDriver = new Augmenter().augment(driver);
+		if (!result.isSuccess()) {
+			try {
+				File scrFile = ((TakesScreenshot) augmentedDriver).getScreenshotAs(OutputType.FILE);
+				FileUtils.copyFile(scrFile, new File("target/failsafe-reports/screenshots/"
+								+ methodName + "_" + formater.format(calendar.getTime()) + ".jpg"));
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+
+	public void takeScreenshotOfFailureFromLocalMachine(ITestResult result) {
+		Calendar calendar = Calendar.getInstance();
+		SimpleDateFormat formater = new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss");
+		String methodName = result.getName();
+		if (!result.isSuccess()) {
+			try {
+				File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+				FileUtils.copyFile(scrFile, new File("target/failsafe-reports/screenshots/"
+								+ methodName + "_" + formater.format(calendar.getTime()) + ".jpg"));
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 }

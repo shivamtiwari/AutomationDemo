@@ -1,9 +1,6 @@
 package com.isango.AutomationDemo.action;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.Reporter;
 
 public class ProductPageActions extends HomePageActions {
 	public void enterInformationAndClickOnBookNow() {
